@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sftp-svc
+  namespace: {{ .Values.coords.namespace }}
+  labels:
+    name: sftp-svc
+    k8s-app: sftp
+spec:
+  type: LoadBalancer
+  ports:
+  - name: ssh
+    port: 22
+    targetPort: 22
+    nodePort: 30022
+  selector:
+    k8s-app: sftp
+  loadBalancerIP: {{ .Values.coords.ip }}
+  loadBalancerSourceRanges:
+  {{- range .Values.network.whitelist }}
+    - {{ . }}
+  {{- end}}

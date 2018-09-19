@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sftp-deployment
+  namespace: {{ .Values.coords.namespace }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: sftp
+    spec:
+      volumes:
+        - name: users
+          secret:
+            secretName: sftp-users
+        - name: gcloud-key
+          secret:
+            secretName: sftp-gcloud-key
+        - name: gcs-mounts
+          configMap:
+            name: gcs-mounts
+            defaultMode: 0744
+      containers:
+      - name: gcs-sftp
+        image: your docker registry/gcs-sftp:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 22
+        volumeMounts:
+          - mountPath: /etc/sftp
+            name: users
+          - mountPath: /credentials
+            name: gcloud-key
+          - mountPath: /etc/sftp.d
+            name: gcs-mounts
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN

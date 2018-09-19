@@ -1,0 +1,9 @@
+coords:
+  name: "cluster-test"
+  projectId: "project-test" #GCP project
+  clusterId: "cluster-test" #GCP cluster-name
+  namespace: "helm-sftp-gcs"
+  helmRelease: "helm-sftp-gcs"
+  zones: ["europe-west1-d"] #Zones used by the cluster, where the first entry is the primary zone (where the cluster was created)
+  ip: "11.111.111.111" #External IP to publish the service
+  environment: "cluster-test" #Each bucket differ this part in each environment

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gcs-mounts
+  namespace: {{ .Values.coords.namespace }}
+data:
+  gcs-mounts.sh: |
+    {{- $var := .Values.coords.environment }}
+    {{ range $line := .Files.Lines "etc/sftp/gcs-mounts.sh" }}
+    {{ $line | replace "ENVIRONMENT" $var }}
+    {{ end }}

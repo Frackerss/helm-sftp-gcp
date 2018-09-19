@@ -1,0 +1,21 @@
+# If making changes, make sure the platform project file (helm/values.yaml) is
+# also updated.
+
+
+# repos is the listing of all container images that comprise a release
+repos:
+  sat: gcstorage-sftpserver
+
+globalVersion: latest #pass in to helm command with --set globalVersion=x to override
+
+# registries is a list of the environment names and registries used when moving
+# container images from one environment to another
+registries:
+  build: eu.gcr.io/sentinel-santander-dev1/
+  dev: eu.gcr.io/sentinel-santander-dev1/dev/
+ # test: eu.gcr.io/sentinel-tst/
+  release: eu.gcr.io/sentinel-santander-uat/
+
+network:
+  whitelist: #This could be added to a cluster values.yaml file to add specific whitelists per env
+    - 0.0.0.0/0
